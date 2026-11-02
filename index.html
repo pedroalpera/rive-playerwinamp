@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rive Winamp</title>
+<style>
+:root{color-scheme:dark;font:13px system-ui,sans-serif;background:#181a20;color:#b3b8c5}*{box-sizing:border-box}body{margin:0;overflow:hidden}canvas{display:block;width:100vw;height:100vh;outline:none;touch-action:none}#notice{position:fixed;left:50%;top:12px;transform:translateX(-50%);max-width:min(800px,95vw);padding:9px 16px;background:#252833;border:1px solid #444957;border-radius:4px;text-align:center;z-index:2}#notice:empty{display:none}#brand{position:fixed;top:18px;left:50%;transform:translateX(-50%);font:12px system-ui;letter-spacing:1.5px;color:#bfc5d1;z-index:2}#fallback{position:fixed;left:50%;top:44px;transform:translateX(-50%);display:flex;gap:6px;z-index:2}button{font:11px system-ui;color:#bfc5d1;background:#22252e;border:1px solid #434858;border-radius:3px;padding:5px 10px;cursor:pointer}button:hover{background:#333846}#drop{position:fixed;inset:10px;border:2px dashed #8ecf64;background:#181a20dd;display:none;align-items:center;justify-content:center;z-index:4;font-size:20px;color:#c1ff9b}input{display:none}
+</style>
+</head>
+<body>
+<canvas id="player" tabindex="0" aria-label="Classic Winamp player. Space to play or pause; Z previous, X play, C pause, V stop, B next; arrows seek or change volume."></canvas>
+<div id="notice" role="status">Loading Rive player…</div>
+<div id="brand">RIVE WINAMP</div>
+<div id="fallback"><button id="filesButton">Open music</button><button id="folderButton">Open folder</button><button id="skinButton">Load .wsz skin</button><button id="resetButton">Reset layout</button></div>
+<div id="drop">Drop music or a classic .wsz skin</div>
+<input id="files" type="file" accept="audio/*,.mp3,.wav,.flac,.ogg,.m4a,.aac,.aiff,.opus" multiple>
+<input id="folder" type="file" webkitdirectory multiple>
+<input id="skin" type="file" accept=".wsz,.zip">
+<script src="./vendor/rive.js"></script>
+<script src="./bridge.js"></script>
+</body></html>

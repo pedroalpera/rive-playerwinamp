@@ -1,0 +1,8 @@
+Rive web runtime: @rive-app/webgl2-threads 2.49.0, MIT.
+https://github.com/rive-app/rive-wasm
+
+Arimo font: SIL Open Font License. See Arimo-OFL.txt.
+
+Default Winamp skin artwork was sourced from the Webamp repository.
+Winamp and the skin artwork belong to their respective owners.
+Webamp reference code license is reproduced in Webamp-MIT.txt.
