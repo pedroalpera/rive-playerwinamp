@@ -155,4 +155,4 @@ canvas.addEventListener('keydown',e=>{
   if(e.key===' '||e.key.startsWith('Arrow'))e.preventDefault();
  }
 });
-boot().catch(error=>{message(error.message);console.error(error);});
+Promise.resolve(window.riveIsolationReady).then(()=>boot()).catch(error=>{message(error.message);console.error(error);});

@@ -8,34 +8,55 @@ this folder itself and visit its URL. For example:
 Keep index.html, bridge.js, player.riv and vendor/ together. Paths are relative,
 so the same package works at the site root or inside a subdirectory.
 
-REQUIRED HOST SETTINGS
+GITHUB PAGES - NO CUSTOM HEADERS REQUIRED
 
-1. Serve the site over HTTPS (localhost is allowed for local testing).
-2. Send these response headers on the HTML page and preferably all files:
-   Cross-Origin-Opener-Policy: same-origin
-   Cross-Origin-Embedder-Policy: require-corp
-3. Serve .wasm files with Content-Type: application/wasm.
+1. Upload every file and folder here, including .nojekyll, to the repository.
+   To put the player at the main Pages URL, upload deploy's CONTENTS to the
+   repository root. Keep the runtime's vendor/ folder intact.
+2. In the repository, open Settings > Pages. Choose "Deploy from a branch",
+   select your branch (usually main), choose "/ (root)", and Save.
+3. Wait for GitHub Pages to finish deployment, then open the HTTPS Pages URL.
+   The first visit refreshes once to enable the audio threads. Later visits
+   start normally. No npm build command or server application is needed.
 
-HOST CONFIGURATION INCLUDED
+If you upload deploy as a folder rather than copying its contents to the
+repository root, still publish the repository root and open:
+  https://YOUR-NAME.github.io/YOUR-REPOSITORY/deploy/
+GitHub's branch settings select the root or docs directory, not an arbitrary
+folder called deploy. A custom Pages Actions workflow is another option.
+
+The bundled coi-serviceworker.js adds isolation headers in the browser.
+isolation.js waits for the worker, performs one controlled refresh, and only
+then lets bridge.js start Rive. The worker is local to this app's folder; it
+does not upload files or cache content. Keep it alongside index.html.
+GitHub Pages ignores .htaccess and _headers; those are included for other hosts.
+
+OTHER HOSTS
+
+Serve the site over HTTPS (localhost also works for testing). For hosts with
+custom headers, the preferred configuration is:
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
+Serve .wasm files with Content-Type: application/wasm.
 
 Apache / typical Apache shared hosting:
-  Keep the hidden .htaccess file when uploading. It sets the headers and WASM
-  MIME type when mod_headers/mod_mime and the host's override settings allow it.
-  If the player reports missing headers, ask the host to enable these settings.
-
+  Keep .htaccess when uploading. It sets the headers and WASM MIME type when
+  mod_headers/mod_mime and the host's override settings allow it.
 Netlify / Cloudflare Pages:
-  The included _headers file sets the required headers for these static hosts.
-  Choose deploy as the publish/output directory. No build command is needed.
-
-Other hosts (including Nginx, S3, GitHub Pages and custom CDNs):
-  .htaccess and _headers are not universal. Configure the required headers in
-  that host's own settings. Hosting must support custom response headers for
-  Rive's audio threads; uploading the files alone cannot add server headers.
+  _headers supplies the required headers. Use deploy as the publish directory,
+  with no build command.
+Other static hosts:
+  The local service worker can supply isolation where headers cannot be set,
+  provided the browser and host permit service workers. If server headers
+  already enable isolation, registration and the refresh are skipped.
 
 WHAT IS INCLUDED
 
 index.html       Browser page and toolbar
 bridge.js        Browser integration; no localhost /api/build dependency
+isolation.js     Waits for audio isolation before starting Rive
+coi-serviceworker.js  Local isolation service worker (MIT, pinned upstream)
+.nojekyll        Disables Jekyll when publishing from a GitHub Pages branch
 player.riv       Latest locally published player, including the Zelda EQ fix,
                  default skin, demo audio, AnimaScript and bundled font
 vendor/          Pinned Rive web runtime and all three WASM variants
@@ -51,4 +72,5 @@ processed in their browsers and are not uploaded to your hosting server.
 Updating the Rive source project does not automatically update this copy.
 After another local publish, recopy build/rive-winamp.riv to deploy/player.riv.
 If web/index.html or web/bridge.js changes, regenerate their deployment copies
-while retaining relative asset paths and omitting the local build API check.
+while retaining relative asset paths, the isolation startup, and omission of
+the local build API check. Retain the three GitHub Pages compatibility files.
